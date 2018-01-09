@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_card_margin">8dp</dimen>
+    <dimen name="default_full_margin">16dp</dimen>
+    <dimen name="card_corner_radius">4dp</dimen>
+    <dimen name="imageSmallHeight">175dp</dimen>
+    <dimen name="imageFullHeight">300dp</dimen>
+</resources>
