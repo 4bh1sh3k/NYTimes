@@ -1,6 +1,5 @@
-package com.abhishek.nytimes.home;
+package com.abhishek.nytimes.home.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,14 +19,18 @@ import android.widget.TextView;
 
 import com.abhishek.nytimes.R;
 import com.abhishek.nytimes.app.NYTApplication;
-import com.abhishek.nytimes.details.DetailsActivity;
+import com.abhishek.nytimes.details.view.DetailsActivity;
+import com.abhishek.nytimes.home.di.DaggerNewsListComponent;
+import com.abhishek.nytimes.home.di.NewsListComponent;
+import com.abhishek.nytimes.home.QueryType;
+import com.abhishek.nytimes.home.presenter.INewsListPresenter;
 import com.abhishek.nytimes.model.Credit;
 import com.abhishek.nytimes.model.NewsItem;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
-public class NewsListActivity extends AppCompatActivity implements INewsListView, MenuItem.OnActionExpandListener, SearchView.OnQueryTextListener {
+public class NewsListActivity extends AppCompatActivity implements MenuItem.OnActionExpandListener, SearchView.OnQueryTextListener, INewsListPresenter.INewsListView {
 
     private static final String SEARCH_TYPE_KEY = "searchType";
     private static final int loadNextThreshold = 4;
@@ -36,16 +39,30 @@ public class NewsListActivity extends AppCompatActivity implements INewsListView
     private Snackbar snackbar;
 
     private NewsAdapter adapter;
-    private SearchType currentSearchType;
+    private QueryType currentQueryType;
     private Snackbar.Callback snackbarCallback;
 
     @Inject
     INewsListPresenter presenter;
 
     @Override
+    protected void onDestroy() {
+        presenter.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        setTitle(R.string.title_home);
+
+        NewsListComponent component = DaggerNewsListComponent.builder()
+                .appComponent(NYTApplication.getComponent())
+                .build();
+        component.injectActivity(this);
+        presenter.onCreate();
+        presenter.setView(this);
 
         progressBar = findViewById(R.id.progressBar);
         Toolbar toolbar = findViewById(R.id.homeToolbar);
@@ -56,13 +73,13 @@ public class NewsListActivity extends AppCompatActivity implements INewsListView
         rcView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (!presenter.isOnGoing(currentSearchType)) {
+                if (!presenter.isOnGoing(currentQueryType)) {
                     if (dy > 0) {
                         int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
                         int totalItems = layoutManager.getItemCount();
 
                         if (lastVisibleItem + loadNextThreshold >= totalItems)
-                            presenter.getNextPage(currentSearchType);
+                            presenter.getNextPage(currentQueryType);
                     }
                 }
             }
@@ -78,20 +95,11 @@ public class NewsListActivity extends AppCompatActivity implements INewsListView
         };
 
         if (savedInstanceState != null)
-            currentSearchType = (SearchType) savedInstanceState.getSerializable(SEARCH_TYPE_KEY);
+            currentQueryType = (QueryType) savedInstanceState.getSerializable(SEARCH_TYPE_KEY);
         else
-            currentSearchType = SearchType.Recent;
+            currentQueryType = QueryType.Recent;
 
-        NYTApplication.getComponent().injectActivity(this);
-        presenter.onAttachView(this, currentSearchType);
-
-        tryInitializeRecent();
-    }
-
-    @Override
-    protected void onDestroy() {
-        presenter.onDetachView();
-        super.onDestroy();
+        presenter.init(currentQueryType);
     }
 
     @Override
@@ -105,7 +113,7 @@ public class NewsListActivity extends AppCompatActivity implements INewsListView
         searchView.setIconifiedByDefault(true);
         searchView.setOnQueryTextListener(this);
 
-        if (currentSearchType == SearchType.Custom) {
+        if (currentQueryType == QueryType.Search) {
             searchView.setIconified(false);
             searchItem.expandActionView();
         }
@@ -115,30 +123,26 @@ public class NewsListActivity extends AppCompatActivity implements INewsListView
 
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
-        currentSearchType = SearchType.Custom;
-        adapter.notifyDataSetChanged();
-
-        setOngoing(presenter.isOnGoing(currentSearchType), currentSearchType);
+        currentQueryType = QueryType.Search;
+        presenter.init(currentQueryType);
+        setOngoing(presenter.isOnGoing(currentQueryType), currentQueryType);
         return true;
     }
 
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
-        currentSearchType = SearchType.Recent;
-        adapter.notifyDataSetChanged();
-        setOngoing(presenter.isOnGoing(currentSearchType), currentSearchType);
-
-        // In case recent news wasn't loaded dude to some error
-        tryInitializeRecent();
+        currentQueryType = QueryType.Recent;
+        presenter.init(currentQueryType);
+        setOngoing(presenter.isOnGoing(currentQueryType), currentQueryType);
 
         presenter.setQuery(null);
-        presenter.clearNews(SearchType.Custom);
         return true;
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
         presenter.setQuery(query);
+        presenter.getNextPage(QueryType.Search);
         return true;
     }
 
@@ -150,35 +154,41 @@ public class NewsListActivity extends AppCompatActivity implements INewsListView
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(SEARCH_TYPE_KEY, currentSearchType);
+        outState.putSerializable(SEARCH_TYPE_KEY, currentQueryType);
     }
 
     @Override
-    public void setOngoing(boolean isOngoing, SearchType type) {
-        if (this.currentSearchType == type) {
+    public void setOngoing(boolean isOngoing, QueryType type) {
+        if (this.currentQueryType == type) {
             progressBar.setVisibility(isOngoing ? View.VISIBLE : View.GONE);
             progressBar.setIndeterminate(isOngoing);
         }
     }
 
     @Override
-    public void notifyNewsAdded(int startIndex, int count, SearchType type) {
-        if (this.currentSearchType == type) {
+    public void notifyNewsChanged(QueryType type) {
+        if (this.currentQueryType == type)
+            adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void notifyNewsAdded(int startIndex, int count, QueryType type) {
+        if (this.currentQueryType == type) {
             adapter.notifyItemRangeInserted(startIndex, count);
         }
     }
 
     @Override
-    public void clearData(SearchType type) {
-        if (this.currentSearchType == type) {
+    public void clearData(QueryType type) {
+        if (this.currentQueryType == type) {
             if (adapter != null)
                 adapter.notifyDataSetChanged();
         }
     }
 
     @Override
-    public void showError(int messageId, SearchType type) {
-        if (this.currentSearchType == type) {
+    public void showError(int messageId, QueryType type) {
+        if (this.currentQueryType == type) {
             if (snackbar != null)
                 snackbar.dismiss();
 
@@ -186,24 +196,6 @@ public class NewsListActivity extends AppCompatActivity implements INewsListView
             snackbar.addCallback(snackbarCallback);
             snackbar.show();
         }
-    }
-
-    @Override
-    public void hideError() {
-        if (snackbar != null)
-            snackbar.dismiss();
-    }
-
-    void tryInitializeRecent() {
-        // Load recent news if it has not loaded yet
-        if (currentSearchType == SearchType.Recent && presenter.getNewsCount(currentSearchType) == 0)
-            presenter.getNextPage(currentSearchType);
-    }
-
-
-    @Override
-    public Context getContext() {
-        return getApplicationContext();
     }
 
     class NewsAdapter extends RecyclerView.Adapter<NewsListActivity.NewsHolder> {
@@ -221,7 +213,7 @@ public class NewsListActivity extends AppCompatActivity implements INewsListView
 
         @Override
         public int getItemCount() {
-            return presenter.getNewsCount(currentSearchType);
+            return presenter.getNewsCount(currentQueryType);
         }
     }
 
@@ -238,7 +230,7 @@ public class NewsListActivity extends AppCompatActivity implements INewsListView
         }
 
         void bindView(int position) {
-            NewsItem item = presenter.getNewsItem(position, currentSearchType);
+            NewsItem item = presenter.getNewsItem(position, currentQueryType);
             if (item != null) {
                 title.setText(item.getHeadline().getTitle());
                 Credit credit = item.getCredit();
@@ -260,7 +252,7 @@ public class NewsListActivity extends AppCompatActivity implements INewsListView
                 itemView.setOnClickListener(v -> {
                     Intent intent = new Intent(NewsListActivity.this, DetailsActivity.class);
                     intent.putExtra(DetailsActivity.ITEM_POSITION, position);
-                    intent.putExtra(DetailsActivity.SEARCH_TYPE, currentSearchType);
+                    intent.putExtra(DetailsActivity.SEARCH_TYPE, currentQueryType);
 
                     startActivity(intent);
                 });

@@ -1,7 +1,7 @@
-package com.abhishek.nytimes.di;
+package com.abhishek.nytimes.base;
 
-import com.abhishek.nytimes.details.DetailsActivity;
-import com.abhishek.nytimes.home.NewsListActivity;
+import com.abhishek.nytimes.details.view.DetailsActivity;
+import com.abhishek.nytimes.repository.IDataProvider;
 
 import javax.inject.Singleton;
 
@@ -10,6 +10,6 @@ import dagger.Component;
 @Singleton
 @Component(modules = {AppModule.class})
 public interface AppComponent {
-    void injectActivity(NewsListActivity activity);
+    IDataProvider getDataProvider();
     void injectActivity(DetailsActivity activity);
 }

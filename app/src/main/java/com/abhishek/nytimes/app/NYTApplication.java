@@ -2,8 +2,8 @@ package com.abhishek.nytimes.app;
 
 import android.app.Application;
 
-import com.abhishek.nytimes.di.AppComponent;
-import com.abhishek.nytimes.di.DaggerAppComponent;
+import com.abhishek.nytimes.base.AppComponent;
+import com.abhishek.nytimes.base.DaggerAppComponent;
 
 
 public class NYTApplication extends Application {

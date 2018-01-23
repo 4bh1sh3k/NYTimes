@@ -1,4 +1,4 @@
-package com.abhishek.nytimes.details;
+package com.abhishek.nytimes.details.view;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,14 +13,17 @@ import android.widget.TextView;
 
 import com.abhishek.nytimes.R;
 import com.abhishek.nytimes.app.NYTApplication;
-import com.abhishek.nytimes.home.SearchType;
+import com.abhishek.nytimes.details.di.DaggerDetailsComponent;
+import com.abhishek.nytimes.details.preseter.IDetailsPresenter;
+import com.abhishek.nytimes.details.di.DetailsComponent;
+import com.abhishek.nytimes.home.QueryType;
 import com.abhishek.nytimes.model.Credit;
 import com.abhishek.nytimes.model.NewsItem;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
-public class DetailsActivity extends AppCompatActivity implements IDetailsView {
+public class DetailsActivity extends AppCompatActivity implements IDetailsPresenter.IDetailsView {
 
     public static final String ITEM_POSITION = "itemPosition";
     public static final String SEARCH_TYPE = "searchType";
@@ -36,6 +39,13 @@ public class DetailsActivity extends AppCompatActivity implements IDetailsView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+        setTitle(R.string.title_details);
+
+        DetailsComponent component = DaggerDetailsComponent.builder()
+                .appComponent(NYTApplication.getComponent())
+                .build();
+        component.injectActivity(this);
+        presenter.setView(this);
 
         setSupportActionBar(findViewById(R.id.detailsToolbar));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -47,21 +57,9 @@ public class DetailsActivity extends AppCompatActivity implements IDetailsView {
         author = findViewById(R.id.author);
         date = findViewById(R.id.date);
         link = findViewById(R.id.link);
-
-        NYTApplication.getComponent().injectActivity(this);
-        presenter.onAttachView(this);
-
-        if(!presenter.isNewsReady()) {
-            int position = getIntent().getIntExtra(ITEM_POSITION, 0);
-            SearchType type = (SearchType) getIntent().getSerializableExtra(SEARCH_TYPE);
-            presenter.getNews(position, type);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        presenter.onDetachView();
-        super.onDestroy();
+        int position = getIntent().getIntExtra(ITEM_POSITION, 0);
+        QueryType type = (QueryType) getIntent().getSerializableExtra(SEARCH_TYPE);
+        presenter.getNews(position, type);
     }
 
     @Override
@@ -107,12 +105,6 @@ public class DetailsActivity extends AppCompatActivity implements IDetailsView {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        presenter.clearNews();
-        super.onBackPressed();
     }
 
     void shareNews() {

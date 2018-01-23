@@ -8,8 +8,8 @@ import retrofit2.http.Query;
 
 public interface NYTService {
     @GET("svc/search/v2/articlesearch.json")
-    Call<ArticleSearchResult> searchArticles(@Query("q") String query, @Query("page") int pageCount, @Query("api-key") String apiKey);
+    Call<ArticleSearchResult> searchArticles(@Query("q") String query, @Query("page") int pageCount);
 
     @GET("svc/search/v2/articlesearch.json")
-    Call<ArticleSearchResult> getArticles(@Query("page") int pageCount, @Query("api-key")String apiKey);
+    Call<ArticleSearchResult> getArticles(@Query("page") int pageCount);
 }

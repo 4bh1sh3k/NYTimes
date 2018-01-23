@@ -8,7 +8,8 @@
     <string name="no_result_message">There seems to be no more news for this query.</string>
     <string name="error_message">Something went wrong. Please try searching for a different term.</string>
     <string name="error_message_home">Something went wrong. Please try again later.</string>
-    <string name="api_key">YOUR_API_KEY</string>
     <string name="no_connectivity_message">No Internet. Please make sure your data connection is on.</string>
     <string name="media_description">Media for the associated news</string>
+    <string name="title_home">News today</string>
+    <string name="title_details">Details</string>
 </resources>
