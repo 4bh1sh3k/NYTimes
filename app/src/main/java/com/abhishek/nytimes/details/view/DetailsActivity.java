@@ -23,14 +23,21 @@ import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailsActivity extends AppCompatActivity implements IDetailsPresenter.IDetailsView {
 
     public static final String ITEM_POSITION = "itemPosition";
     public static final String SEARCH_TYPE = "searchType";
 
     NewsItem newsItem;
-    ImageView mediaLarge;
-    TextView headline, summary, author, date, link;
+    @BindView(R.id.mediaLarge) ImageView mediaLarge;
+    @BindView(R.id.headline) TextView headline;
+    @BindView(R.id.summary) TextView summary;
+    @BindView(R.id.author) TextView author;
+    @BindView(R.id.date) TextView date;
+    @BindView(R.id.link) TextView link;
 
     @Inject
     IDetailsPresenter presenter;
@@ -39,7 +46,7 @@ public class DetailsActivity extends AppCompatActivity implements IDetailsPresen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        setTitle(R.string.title_details);
+        ButterKnife.bind(this);
 
         DetailsComponent component = DaggerDetailsComponent.builder()
                 .appComponent(NYTApplication.getComponent())
@@ -51,12 +58,7 @@ public class DetailsActivity extends AppCompatActivity implements IDetailsPresen
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mediaLarge = findViewById(R.id.mediaLarge);
-        headline = findViewById(R.id.headline);
-        summary = findViewById(R.id.summary);
-        author = findViewById(R.id.author);
-        date = findViewById(R.id.date);
-        link = findViewById(R.id.link);
+        setTitle(R.string.title_details);
         int position = getIntent().getIntExtra(ITEM_POSITION, 0);
         QueryType type = (QueryType) getIntent().getSerializableExtra(SEARCH_TYPE);
         presenter.getNews(position, type);

@@ -30,12 +30,18 @@ import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class NewsListActivity extends AppCompatActivity implements MenuItem.OnActionExpandListener, SearchView.OnQueryTextListener, INewsListPresenter.INewsListView {
 
     private static final String SEARCH_TYPE_KEY = "searchType";
     private static final int loadNextThreshold = 4;
 
-    private ProgressBar progressBar;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
+    @BindView(R.id.homeToolbar) Toolbar toolbar;
+    @BindView(R.id.rcView) RecyclerView rcView;
+
     private Snackbar snackbar;
 
     private NewsAdapter adapter;
@@ -55,7 +61,7 @@ public class NewsListActivity extends AppCompatActivity implements MenuItem.OnAc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        setTitle(R.string.title_home);
+        ButterKnife.bind(this);
 
         NewsListComponent component = DaggerNewsListComponent.builder()
                 .appComponent(NYTApplication.getComponent())
@@ -64,10 +70,7 @@ public class NewsListActivity extends AppCompatActivity implements MenuItem.OnAc
         presenter.onCreate();
         presenter.setView(this);
 
-        progressBar = findViewById(R.id.progressBar);
-        Toolbar toolbar = findViewById(R.id.homeToolbar);
         setSupportActionBar(toolbar);
-        RecyclerView rcView = findViewById(R.id.rcView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rcView.setLayoutManager(layoutManager);
         rcView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -99,6 +102,7 @@ public class NewsListActivity extends AppCompatActivity implements MenuItem.OnAc
         else
             currentQueryType = QueryType.Recent;
 
+        setTitle(R.string.title_home);
         presenter.init(currentQueryType);
     }
 
@@ -218,15 +222,14 @@ public class NewsListActivity extends AppCompatActivity implements MenuItem.OnAc
     }
 
     class NewsHolder extends RecyclerView.ViewHolder {
-        TextView title, author, date;
-        ImageView media;
+        @BindView(R.id.title) TextView title;
+        @BindView(R.id.media) ImageView media;
+        @BindView(R.id.author) TextView author;
+        @BindView(R.id.date) TextView date;
 
         NewsHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.title);
-            media = itemView.findViewById(R.id.media);
-            author = itemView.findViewById(R.id.author);
-            date = itemView.findViewById(R.id.date);
+            ButterKnife.bind(this, itemView);
         }
 
         void bindView(int position) {

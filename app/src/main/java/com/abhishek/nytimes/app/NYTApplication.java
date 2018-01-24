@@ -7,7 +7,7 @@ import com.abhishek.nytimes.base.DaggerAppComponent;
 
 
 public class NYTApplication extends Application {
-    public static AppComponent component;
+    private static AppComponent component;
     public static AppComponent getComponent() {
         return component;
     }
