@@ -12,15 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.abhishek.nytimes.R;
-import com.abhishek.nytimes.app.NYTApplication;
-import com.abhishek.nytimes.details.di.DaggerDetailsComponent;
 import com.abhishek.nytimes.details.preseter.IDetailsPresenter;
-import com.abhishek.nytimes.details.di.DetailsComponent;
 import com.abhishek.nytimes.home.QueryType;
 import com.abhishek.nytimes.model.Credit;
 import com.abhishek.nytimes.model.NewsItem;
 import com.squareup.picasso.Picasso;
 
+import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -44,14 +42,11 @@ public class DetailsActivity extends AppCompatActivity implements IDetailsPresen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
 
-        DetailsComponent component = DaggerDetailsComponent.builder()
-                .appComponent(NYTApplication.getComponent())
-                .build();
-        component.injectActivity(this);
         presenter.setView(this);
 
         setSupportActionBar(findViewById(R.id.detailsToolbar));

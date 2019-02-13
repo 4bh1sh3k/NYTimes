@@ -18,16 +18,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.abhishek.nytimes.R;
-import com.abhishek.nytimes.app.NYTApplication;
 import com.abhishek.nytimes.details.view.DetailsActivity;
-import com.abhishek.nytimes.home.di.DaggerNewsListComponent;
-import com.abhishek.nytimes.home.di.NewsListComponent;
 import com.abhishek.nytimes.home.QueryType;
 import com.abhishek.nytimes.home.presenter.INewsListPresenter;
 import com.abhishek.nytimes.model.Credit;
 import com.abhishek.nytimes.model.NewsItem;
 import com.squareup.picasso.Picasso;
 
+import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -59,14 +57,11 @@ public class NewsListActivity extends AppCompatActivity implements MenuItem.OnAc
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
 
-        NewsListComponent component = DaggerNewsListComponent.builder()
-                .appComponent(NYTApplication.getComponent())
-                .build();
-        component.injectActivity(this);
         presenter.onCreate();
         presenter.setView(this);
 

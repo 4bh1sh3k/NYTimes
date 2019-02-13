@@ -1,15 +1,11 @@
 package com.abhishek.nytimes.base;
 
-import com.abhishek.nytimes.details.preseter.DetailsPresenter;
-import com.abhishek.nytimes.details.preseter.IDetailsPresenter;
 import com.abhishek.nytimes.repository.IDataProvider;
 import com.abhishek.nytimes.repository.NewsProvider;
 import com.abhishek.nytimes.service.NYTService;
-
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
+import javax.inject.Singleton;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -50,11 +46,5 @@ class AppModule {
     @Singleton
     NYTService provideNYTService(Retrofit retrofit) {
         return retrofit.create(NYTService.class);
-    }
-
-    @Provides
-    @Singleton
-    IDetailsPresenter provideDetailsPresenter(IDataProvider provider) {
-        return new DetailsPresenter(provider);
     }
 }

@@ -2,8 +2,6 @@ package com.abhishek.nytimes.repository;
 
 import com.abhishek.nytimes.model.NewsItem;
 
-import java.util.List;
-
 public interface IDataProvider {
 
     //region Recent Items

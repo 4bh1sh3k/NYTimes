@@ -1,15 +1,12 @@
 package com.abhishek.nytimes.base;
 
-import com.abhishek.nytimes.details.view.DetailsActivity;
-import com.abhishek.nytimes.repository.IDataProvider;
-
+import com.abhishek.nytimes.app.NYTApplication;
+import dagger.Component;
+import dagger.android.AndroidInjectionModule;
 import javax.inject.Singleton;
 
-import dagger.Component;
-
 @Singleton
-@Component(modules = {AppModule.class})
+@Component(modules = {AppModule.class, AndroidInjectionModule.class, ActivityInjectorModule.class })
 public interface AppComponent {
-    IDataProvider getDataProvider();
-    void injectActivity(DetailsActivity activity);
+    void inject(NYTApplication app);
 }
