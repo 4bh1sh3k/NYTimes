@@ -3,7 +3,8 @@ package com.abhishek.nytimes.details.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +36,7 @@ public class DetailsActivity extends AppCompatActivity implements IDetailsPresen
     @BindView(R.id.summary) TextView summary;
     @BindView(R.id.author) TextView author;
     @BindView(R.id.date) TextView date;
+    @BindView(R.id.linkTitle) TextView linkTitle;
     @BindView(R.id.link) TextView link;
 
     @Inject
@@ -70,7 +72,10 @@ public class DetailsActivity extends AppCompatActivity implements IDetailsPresen
             if (credit != null)
                 author.setText(credit.getAuthor());
             date.setText(item.getPublicationDate());
-            link.setText(item.getUrl());
+            if(TextUtils.isEmpty(item.getUrl()))
+                linkTitle.setVisibility(View.GONE);
+            else
+                link.setText(item.getUrl());
 
             if (item.getMediaUri() != null) {
                 mediaLarge.setVisibility(View.VISIBLE);

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.abhishek.nytimes.details.view.DetailsActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/detailsToolbar"
         android:layout_width="0dp"
         android:layout_height="?android:attr/actionBarSize"
@@ -31,19 +32,23 @@
 
             <ImageView
                 android:id="@+id/mediaLarge"
-                android:contentDescription="@string/media_description"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/imageFullHeight" />
+                android:layout_height="@dimen/imageFullHeight"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/media_description"
+                android:scaleType="centerCrop"
+                tools:src="@tools:sample/backgrounds/scenic"/>
 
             <TextView
                 android:id="@+id/headline"
-                android:textColor="@color/colorAccent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/default_full_margin"
                 android:layout_marginStart="@dimen/default_full_margin"
                 android:layout_marginTop="@dimen/default_card_margin"
-                android:textSize="34sp" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                android:textColor="@color/colorAccent"
+                tools:text="@tools:sample/lorem"/>
 
             <TextView
                 android:id="@+id/author"
@@ -52,7 +57,8 @@
                 android:layout_marginEnd="@dimen/default_full_margin"
                 android:layout_marginStart="@dimen/default_full_margin"
                 android:layout_marginTop="@dimen/default_card_margin"
-                android:textSize="14sp" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                tools:text="@tools:sample/full_names"/>
 
             <TextView
                 android:id="@+id/date"
@@ -61,7 +67,8 @@
                 android:layout_marginBottom="@dimen/default_card_margin"
                 android:layout_marginEnd="@dimen/default_full_margin"
                 android:layout_marginStart="@dimen/default_full_margin"
-                android:textSize="14sp" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                tools:text="@tools:sample/date/mmddyy"/>
 
             <TextView
                 android:id="@+id/summary"
@@ -70,15 +77,17 @@
                 android:layout_marginBottom="@dimen/default_card_margin"
                 android:layout_marginEnd="@dimen/default_full_margin"
                 android:layout_marginStart="@dimen/default_full_margin"
-                android:textSize="16sp" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                tools:text="@tools:sample/lorem"/>
 
             <TextView
+                android:id="@+id/linkTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/default_full_margin"
                 android:layout_marginStart="@dimen/default_full_margin"
                 android:text="@string/further_reading"
-                android:textSize="14sp" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
 
             <TextView
                 android:id="@+id/link"
@@ -88,9 +97,11 @@
                 android:layout_marginEnd="@dimen/default_full_margin"
                 android:layout_marginStart="@dimen/default_full_margin"
                 android:autoLink="web"
-                android:textSize="14sp" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                tools:text="https://www.nytimes.com"/>
+
         </LinearLayout>
+
     </ScrollView>
 
-
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
