@@ -1,17 +1,16 @@
 package com.abhishek.nytimes.app;
 
-import android.app.Activity;
 import android.app.Application;
 
 import com.abhishek.nytimes.base.DaggerAppComponent;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasActivityInjector;
+import dagger.android.HasAndroidInjector;
 import javax.inject.Inject;
 
-public class NYTApplication extends Application implements HasActivityInjector {
+public class NYTApplication extends Application implements HasAndroidInjector {
 
-    @Inject DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
+    @Inject DispatchingAndroidInjector<Object> dispatchingAndroidInjector;
 
     @Override
     public void onCreate() {
@@ -21,7 +20,7 @@ public class NYTApplication extends Application implements HasActivityInjector {
             .inject(this);
     }
 
-    @Override public AndroidInjector<Activity> activityInjector() {
+    @Override public AndroidInjector<Object> androidInjector() {
         return dispatchingAndroidInjector;
     }
 }

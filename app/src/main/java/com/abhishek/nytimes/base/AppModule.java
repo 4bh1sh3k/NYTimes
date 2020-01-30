@@ -23,23 +23,27 @@ class AppModule {
 
     @Provides
     @Singleton
-    Retrofit provideRetrofit() {
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(chain -> {
-                    Request request = chain.request();
-                    HttpUrl url = request.url().newBuilder()
-                            .addQueryParameter("api-key", "API_KEY")
-                            .build();
-                    request = request.newBuilder().url(url).build();
-                    return chain.proceed(request);
-                }).build();
-
-
+    Retrofit provideRetrofit(OkHttpClient client) {
         return new Retrofit.Builder()
                 .baseUrl("https://api.nytimes.com/")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+    }
+
+    @Provides
+    @Singleton
+    OkHttpClient provideOkHttpClient() {
+      return new OkHttpClient.Builder()
+          .addInterceptor(chain -> {
+            Request request = chain.request();
+            HttpUrl url = request.url().newBuilder()
+                .addQueryParameter("api-key", "API_KEY")
+                .build();
+            request = request.newBuilder().url(url).build();
+            return chain.proceed(request);
+          })
+          .build();
     }
 
     @Provides

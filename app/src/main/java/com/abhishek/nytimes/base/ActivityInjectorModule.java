@@ -10,11 +10,11 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 abstract class ActivityInjectorModule {
 
-  @ActivityScope
+  @DetailsScope
   @ContributesAndroidInjector(modules = DetailsModule.class)
   abstract DetailsActivity contributeDetailsActivityInjector();
 
-  @ActivityScope
+  @HomeScope
   @ContributesAndroidInjector(modules = NewsListModule.class)
   abstract NewsListActivity contributesNewsListActivityInjector();
 }
