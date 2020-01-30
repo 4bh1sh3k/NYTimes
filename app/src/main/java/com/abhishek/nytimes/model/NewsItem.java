@@ -10,8 +10,8 @@ import java.util.Locale;
 
 public class NewsItem {
 
-    public static SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ");
-    public static SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, hh:mm a", Locale.US);
+    private static SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ", Locale.US);
+    private static SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, hh:mm a", Locale.US);
 
     private String formattedDate;
     @SerializedName("web_url")

@@ -9,8 +9,6 @@ public class DetailsPresenter implements IDetailsPresenter {
     private IDataProvider newsProvider;
     private IDetailsView view;
 
-    private NewsItem item;
-
     public DetailsPresenter(IDataProvider newsProvider) {
         this.newsProvider = newsProvider;
     }
@@ -22,7 +20,7 @@ public class DetailsPresenter implements IDetailsPresenter {
 
     @Override
     public void getNews(int position, QueryType type) {
-        item = type == QueryType.Recent ? newsProvider.getRecentItem(position) : newsProvider.getSearchItem(position);
+        NewsItem item = type == QueryType.Recent ? newsProvider.getRecentItem(position) : newsProvider.getSearchItem(position);
         view.showNews(item);
     }
 }

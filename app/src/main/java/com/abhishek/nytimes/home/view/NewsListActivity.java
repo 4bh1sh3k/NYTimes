@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -71,7 +72,7 @@ public class NewsListActivity extends AppCompatActivity implements MenuItem.OnAc
         rcView.setLayoutManager(layoutManager);
         rcView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 if (!presenter.isOnGoing(currentQueryType)) {
                     if (dy > 0) {
                         int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
@@ -152,7 +153,7 @@ public class NewsListActivity extends AppCompatActivity implements MenuItem.OnAc
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(SEARCH_TYPE_KEY, currentQueryType);
     }
@@ -200,8 +201,8 @@ public class NewsListActivity extends AppCompatActivity implements MenuItem.OnAc
 
     class NewsAdapter extends RecyclerView.Adapter<NewsListActivity.NewsHolder> {
 
-        @Override
-        public NewsListActivity.NewsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @Override @NonNull
+        public NewsListActivity.NewsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = getLayoutInflater().inflate(R.layout.layout_newsitem_withimage, parent, false);
             return new NewsListActivity.NewsHolder(view);
         }

@@ -2,6 +2,8 @@ package com.abhishek.nytimes.repository;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.abhishek.nytimes.model.ArticleSearchResponse;
 import com.abhishek.nytimes.model.ArticleSearchResult;
 import com.abhishek.nytimes.model.NewsItem;
@@ -42,21 +44,22 @@ public class NewsProvider implements IDataProvider {
 
             service.getArticles(recentPageCount).enqueue(new retrofit2.Callback<ArticleSearchResult>() {
                 @Override
-                public void onResponse(Call<ArticleSearchResult> call, Response<ArticleSearchResult> response) {
+                public void onResponse(@NonNull Call<ArticleSearchResult> call, @NonNull Response<ArticleSearchResult> response) {
                     isLoadingRecent = false;
 
-                    if (response.isSuccessful()) {
-                        ArticleSearchResponse result = response.body().getResponse();
-                        recentHitsCount = result.getMeta().getHits();
+                    ArticleSearchResult result = response.body();
+                    if (response.isSuccessful() && result != null) {
+                        ArticleSearchResponse articles = result.getResponse();
+                        recentHitsCount = articles.getMeta().getHits();
 
-                        recentItems.addAll(result.getNews());
-                        callback.recentItemsLoaded(result.getNews().size());
+                        recentItems.addAll(articles.getNews());
+                        callback.recentItemsLoaded(articles.getNews().size());
                     } else
                         callback.recentItemsError();
                 }
 
                 @Override
-                public void onFailure(Call<ArticleSearchResult> call, Throwable t) {
+                public void onFailure(@NonNull Call<ArticleSearchResult> call, @NonNull Throwable t) {
                     isLoadingRecent = false;
 
                     Log.e(getClass().getSimpleName(), t.getMessage());

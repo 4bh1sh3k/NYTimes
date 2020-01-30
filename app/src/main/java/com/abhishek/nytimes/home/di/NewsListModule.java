@@ -12,7 +12,7 @@ import dagger.Provides;
 public class NewsListModule {
     @Provides
     @HomeScope
-    public INewsListPresenter providePresenter(IDataProvider provider) {
+    INewsListPresenter providePresenter(IDataProvider provider) {
         return new NewsListPresenter(provider);
     }
 }
