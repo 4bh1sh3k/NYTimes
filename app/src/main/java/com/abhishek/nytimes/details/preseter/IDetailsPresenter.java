@@ -5,6 +5,7 @@ import com.abhishek.nytimes.model.NewsItem;
 
 public interface IDetailsPresenter {
     void setView(IDetailsView view);
+
     void getNews(int position, QueryType type);
 
     interface IDetailsView {

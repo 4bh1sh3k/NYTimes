@@ -3,14 +3,15 @@ package com.abhishek.nytimes.details.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.abhishek.nytimes.R;
 import com.abhishek.nytimes.details.preseter.IDetailsPresenter;
@@ -19,11 +20,11 @@ import com.abhishek.nytimes.model.Credit;
 import com.abhishek.nytimes.model.NewsItem;
 import com.squareup.picasso.Picasso;
 
-import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjection;
 
 public class DetailsActivity extends AppCompatActivity implements IDetailsPresenter.IDetailsView {
 
@@ -31,13 +32,20 @@ public class DetailsActivity extends AppCompatActivity implements IDetailsPresen
     public static final String SEARCH_TYPE = "searchType";
 
     NewsItem newsItem;
-    @BindView(R.id.mediaLarge) ImageView mediaLarge;
-    @BindView(R.id.headline) TextView headline;
-    @BindView(R.id.summary) TextView summary;
-    @BindView(R.id.author) TextView author;
-    @BindView(R.id.date) TextView date;
-    @BindView(R.id.linkTitle) TextView linkTitle;
-    @BindView(R.id.link) TextView link;
+    @BindView(R.id.mediaLarge)
+    ImageView mediaLarge;
+    @BindView(R.id.headline)
+    TextView headline;
+    @BindView(R.id.summary)
+    TextView summary;
+    @BindView(R.id.author)
+    TextView author;
+    @BindView(R.id.date)
+    TextView date;
+    @BindView(R.id.linkTitle)
+    TextView linkTitle;
+    @BindView(R.id.link)
+    TextView link;
 
     @Inject
     IDetailsPresenter presenter;
@@ -72,7 +80,7 @@ public class DetailsActivity extends AppCompatActivity implements IDetailsPresen
             if (credit != null)
                 author.setText(credit.getAuthor());
             date.setText(item.getPublicationDate());
-            if(TextUtils.isEmpty(item.getUrl()))
+            if (TextUtils.isEmpty(item.getUrl()))
                 linkTitle.setVisibility(View.GONE);
             else
                 link.setText(item.getUrl());

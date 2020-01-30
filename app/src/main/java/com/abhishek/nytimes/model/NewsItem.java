@@ -63,14 +63,14 @@ public class NewsItem {
     }
 
     public String getPublicationDate() {
-       if(formattedDate == null) {
-           if(publicationDate != null) {
-               Date date = parser.parse(publicationDate, new ParsePosition(0));
-               if(date != null)
-               formattedDate = formatter.format(date);
-           }
-       }
-       return formattedDate;
+        if (formattedDate == null) {
+            if (publicationDate != null) {
+                Date date = parser.parse(publicationDate, new ParsePosition(0));
+                if (date != null)
+                    formattedDate = formatter.format(date);
+            }
+        }
+        return formattedDate;
     }
 
     public void setPublicationDate(String publicationDate) {
@@ -86,7 +86,7 @@ public class NewsItem {
     }
 
     public String getMediaUri() {
-        if(getMultimedia().isEmpty())
+        if (getMultimedia().isEmpty())
             return null;
         else
             return "https://static01.nyt.com/" + getMultimedia().get(0).getSubUrl();

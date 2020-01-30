@@ -3,12 +3,6 @@ package com.abhishek.nytimes.home.view;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,37 +11,44 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.abhishek.nytimes.R;
 import com.abhishek.nytimes.details.view.DetailsActivity;
 import com.abhishek.nytimes.home.QueryType;
 import com.abhishek.nytimes.home.presenter.INewsListPresenter;
 import com.abhishek.nytimes.model.Credit;
 import com.abhishek.nytimes.model.NewsItem;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
-import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.AndroidInjection;
 
 public class NewsListActivity extends AppCompatActivity implements MenuItem.OnActionExpandListener, SearchView.OnQueryTextListener, INewsListPresenter.INewsListView {
 
     private static final String SEARCH_TYPE_KEY = "searchType";
     private static final int loadNextThreshold = 4;
 
-    @BindView(R.id.progressBar) ProgressBar progressBar;
-    @BindView(R.id.homeToolbar) Toolbar toolbar;
-    @BindView(R.id.rcView) RecyclerView rcView;
-
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+    @BindView(R.id.homeToolbar)
+    Toolbar toolbar;
+    @BindView(R.id.rcView)
+    RecyclerView rcView;
+    @Inject
+    INewsListPresenter presenter;
     private Snackbar snackbar;
-
     private NewsAdapter adapter;
     private QueryType currentQueryType;
     private Snackbar.Callback snackbarCallback;
-
-    @Inject
-    INewsListPresenter presenter;
 
     @Override
     protected void onDestroy() {
@@ -217,10 +218,14 @@ public class NewsListActivity extends AppCompatActivity implements MenuItem.OnAc
     }
 
     class NewsHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.title) TextView title;
-        @BindView(R.id.media) ImageView media;
-        @BindView(R.id.author) TextView author;
-        @BindView(R.id.date) TextView date;
+        @BindView(R.id.title)
+        TextView title;
+        @BindView(R.id.media)
+        ImageView media;
+        @BindView(R.id.author)
+        TextView author;
+        @BindView(R.id.date)
+        TextView date;
 
         NewsHolder(View itemView) {
             super(itemView);

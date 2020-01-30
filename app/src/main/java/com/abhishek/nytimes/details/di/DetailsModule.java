@@ -10,7 +10,8 @@ import dagger.Provides;
 
 @Module
 public class DetailsModule {
-    @Provides @DetailsScope
+    @Provides
+    @DetailsScope
     public IDetailsPresenter providePresenter(IDataProvider provider) {
         return new DetailsPresenter(provider);
     }

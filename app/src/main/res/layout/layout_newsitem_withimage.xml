@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -21,38 +20,38 @@
             android:layout_height="@dimen/imageSmallHeight"
             android:contentDescription="@string/media_description"
             android:scaleType="centerCrop"
-            tools:src="@tools:sample/backgrounds/scenic"/>
+            tools:src="@tools:sample/backgrounds/scenic" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_card_margin"
             android:layout_marginStart="@dimen/default_card_margin"
             android:layout_marginTop="@dimen/default_card_margin"
-            android:textColor="@color/colorAccent"
+            android:layout_marginEnd="@dimen/default_card_margin"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            tools:text="@tools:sample/lorem"/>
+            android:textColor="@color/colorAccent"
+            tools:text="@tools:sample/lorem" />
 
         <TextView
             android:id="@+id/author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_card_margin"
             android:layout_marginStart="@dimen/default_card_margin"
             android:layout_marginTop="@dimen/default_card_margin"
+            android:layout_marginEnd="@dimen/default_card_margin"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            tools:text="@tools:sample/full_names"/>
+            tools:text="@tools:sample/full_names" />
 
         <TextView
             android:id="@+id/date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_card_margin"
-            android:layout_marginEnd="@dimen/default_card_margin"
             android:layout_marginStart="@dimen/default_card_margin"
+            android:layout_marginEnd="@dimen/default_card_margin"
+            android:layout_marginBottom="@dimen/default_card_margin"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-            tools:text="@tools:sample/date/mmddyy"/>
+            tools:text="@tools:sample/date/mmddyy" />
 
     </LinearLayout>
 
