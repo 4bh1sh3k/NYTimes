@@ -124,7 +124,7 @@ public class DetailsActivity extends AppCompatActivity implements IDetailsPresen
             intent.putExtra(Intent.EXTRA_SUBJECT, newsItem.getHeadline().getTitle());
             intent.putExtra(Intent.EXTRA_TEXT, newsItem.getUrl());
 
-            startActivity(intent);
+            startActivity(Intent.createChooser(intent, newsItem.getHeadline().getTitle()));
         }
     }
 
