@@ -36,7 +36,7 @@ import dagger.android.AndroidInjection;
 public class NewsListActivity extends AppCompatActivity implements MenuItem.OnActionExpandListener, SearchView.OnQueryTextListener, INewsListPresenter.INewsListView {
 
     private static final String SEARCH_TYPE_KEY = "searchType";
-    private static final int loadNextThreshold = 4;
+    private static final int LOAD_NEXT_THRESHOLD = 4;
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
@@ -78,7 +78,7 @@ public class NewsListActivity extends AppCompatActivity implements MenuItem.OnAc
                         int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
                         int totalItems = layoutManager.getItemCount();
 
-                        if (lastVisibleItem + loadNextThreshold >= totalItems)
+                        if (lastVisibleItem + LOAD_NEXT_THRESHOLD >= totalItems)
                             presenter.getNextPage(currentQueryType);
                     }
                 }

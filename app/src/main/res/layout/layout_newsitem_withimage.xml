@@ -29,8 +29,8 @@
             android:layout_marginStart="@dimen/default_full_margin"
             android:layout_marginTop="@dimen/default_full_margin"
             android:layout_marginEnd="@dimen/default_full_margin"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            android:textColor="@color/colorAccent"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            android:textColor="?attr/colorSecondary"
             tools:text="@tools:sample/lorem" />
 
         <TextView
@@ -40,7 +40,7 @@
             android:layout_marginStart="@dimen/default_full_margin"
             android:layout_marginTop="@dimen/default_full_margin"
             android:layout_marginEnd="@dimen/default_full_margin"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textAppearance="?attr/textAppearanceBody1"
             tools:text="@tools:sample/full_names" />
 
         <TextView
@@ -50,7 +50,7 @@
             android:layout_marginStart="@dimen/default_full_margin"
             android:layout_marginEnd="@dimen/default_full_margin"
             android:layout_marginBottom="@dimen/default_full_margin"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textAppearance="?attr/textAppearanceCaption"
             tools:text="@tools:sample/date/mmddyy" />
 
     </LinearLayout>
